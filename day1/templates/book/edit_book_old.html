@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>编辑出版社信息</title>
+</head>
+<body>
+<h1>编辑出版信息</h1>
+<form action="/edit_publisher/" method="post">
+    <input type="text" name="id" value="{{ edit_book.id }}" style="display: none">
+    <p>书名：
+        <input type="text" name="title" value="{{ edit_book.title }}">
+    </p>
+    <p>
+        出版社：
+        <select name="publisher"  >
+            {% for publisher in publisher_list%}
+                <!--默认选中当前书籍关联的出版社-->
+                {% if publisher.id == edit_book.publisher_id %}
+                    <option selected value="{{ publisher.id }}">{{ publisher.name }}</option>
+                {% else %}
+                    <option value="{{ publisher.id }}">{{ publisher.name }}</option>
+                {% endif %}
+
+            {% endfor %}
+        </select>
+    </p>
+    <p>
+        <input type="submit" value="提交">
+    </p>
+</form>
+</body>
+</html>

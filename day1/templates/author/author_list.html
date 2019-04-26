@@ -1,0 +1,91 @@
+{% extends "index.html" %}
+
+{% block content %}
+    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+        <h1 class="page-header">十大网络文学作家</h1>
+
+        <div class="panel panel-primary">
+            <!-- Default panel contents -->
+            <div class="panel-heading">作家信息 <i class="fa fa-thumb-tack pull-right"></i></div>
+            <div class="panel-body">
+                <div class="row" style="margin-bottom: 15px">
+                    <div class="col-md-4">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Search for...">
+                            <span class="input-group-btn">
+                                    <button class="btn btn-default" type="button">搜索</button>
+                                </span>
+                        </div><!-- /input-group -->
+                    </div><!-- /.col-md-4 -->
+                    <div class="col-md-1 pull-right">
+                        <a href="/add_author/" class="btn btn-success">新增</a>
+                    </div>
+
+                </div><!-- /.row -->
+
+
+                <table class="table table-bordered">
+                    <thead>
+                    <th>序号</th>
+                    <th>ID</th>
+                    <th>姓名</th>
+                    <th>作品</th>
+                    <th>操作</th>
+                    </thead>
+                    <tbody>
+                    {% for row in author_list %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ row.id }}</td>
+                            <td>{{ row.name }}</td>
+                            <td>
+                                <!--连表查询  row.book是Django  ORM封装的管理对象（工具）
+                                row.book.all让Django ORM帮我查所有关联的book
+                                -->
+                                {% for book in row.book.all %}
+                                    <!--如果是循环最后一本书，就不加管道符-->
+                                    {% if forloop.last %}
+                                        {{ book.title }}
+                                    {% else %}
+                                        {{ book.title }}|
+
+                                    {% endif %}
+
+                                    <!--方法二书与书之间加空格{{ book.title }}&nbsp-->
+                                {% endfor %}
+                            </td>
+                            <td>
+                                <a class="btn btn-danger" href="/delete_author/?id={{ row.id }}">删除</a>
+                                <a class="btn btn-info" href="/edit_author/?id={{ row.id }}">编辑</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+
+                    </tbody>
+                </table>
+
+                <nav aria-label="Page navigation" class="text-right">
+                    <ul class="pagination">
+                        <li>
+                            <a href="#" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        <li><a href="#">1</a></li>
+                        <li><a href="#">2</a></li>
+                        <li><a href="#">3</a></li>
+                        <li><a href="#">4</a></li>
+                        <li><a href="#">5</a></li>
+                        <li>
+                            <a href="#" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+
+        </div>
+    </div>
+
+{% endblock %}
